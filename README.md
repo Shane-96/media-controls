@@ -1,3 +1,7 @@
+# Media Controls
+
+This fork continues development of Media Controls after the upstream repository was archived. Releases of this fork are published on [GitHub](https://github.com/Shane-96/media-controls/releases).
+
 ## What does this extension do?
 
 Show controls and information of the currently playing media in the panel.
@@ -15,17 +19,22 @@ Show controls and information of the currently playing media in the panel.
 
 ## How to install
 
-#### Install from extensions.gnome.org (Recommended)
+#### Install this fork from GitHub Releases
 
-[<img src="assets/images/ego.png" height="100">](https://extensions.gnome.org/extension/4470/media-controls/)
+1. Download `mediacontrols@cliffniff.github.com.shell-extension.zip` from the [latest release](https://github.com/Shane-96/media-controls/releases/latest). Use the attached extension ZIP, rather than GitHub's source code archives.
+2. Open a terminal in the directory containing the downloaded file and run:
 
-#### Manual installation
+   ```sh
+   gnome-extensions install --force mediacontrols@cliffniff.github.com.shell-extension.zip
+   ```
 
-Install from source
+3. Log out and back in, then enable the extension:
 
-- Download archive file from the releases tab
-- Open a terminal in the directory containing the downloaded file
-- Install and enable the extension by executing `gnome-extensions install extension.zip --force` in the terminal
+   ```sh
+   gnome-extensions enable mediacontrols@cliffniff.github.com
+   ```
+
+The extension keeps its original UUID so existing settings are preserved. Installing this fork replaces the upstream extension with the same UUID. The [extensions.gnome.org listing](https://extensions.gnome.org/extension/4470/media-controls/) belongs to the upstream project and does not distribute this fork's releases.
 
 ---
 
@@ -42,19 +51,27 @@ Install from source
 
 ## Development
 
-This project uses pnpm for package management and script execution. Make sure you have pnpm installed.
+This project uses Node.js 24 and pnpm 10 for package management and script execution. Building also requires `gnome-extensions`, `glib-compile-resources`, gettext, and zip. On Ubuntu, install the build tools with:
+
+```sh
+sudo apt-get install gnome-shell libglib2.0-bin gettext zip
+```
 
 ### Available Scripts
 
 **Building:**
+
 - `pnpm build` - Build the extension
-- `pnpm release` - Build release version (strips debug code)
+
+The installable ZIP is written to `dist/builds/mediacontrols@cliffniff.github.com.shell-extension.zip`.
 
 **Development:**
+
 - `pnpm debug` - Run a nested gnome session for debugging
 - `pnpm translations` - Update translation files
 
 **Extension Management:**
+
 - `pnpm run ext:install` - Install the extension
 - `pnpm run ext:uninstall` - Uninstall the extension
 - `pnpm run ext:enable` - Enable the extension
@@ -65,11 +82,26 @@ This project uses pnpm for package management and script execution. Make sure yo
 
 1. Clone the repository
 2. Install dependencies: `pnpm install`
-3. Build and install: `pnpm reinstall`
-4. Enable the extension: `pnpm run enable`
-5. Open preferences to test: `pnpm run prefs`
+3. Build: `pnpm build`
+4. Install: `pnpm run ext:install`
+5. Log out and back in, then enable the extension: `pnpm run ext:enable`
+6. Open preferences to test: `pnpm run ext:prefs`
 
-For active development, use `pnpm reload` (X11) or `pnpm debug` (Wayland) to test changes.
+For active development, use `pnpm debug` to test changes in a nested GNOME session.
+
+### Publishing a release
+
+The version in `src/metadata.json` (`version-name`) is the source of truth. To publish a release:
+
+1. Update `version-name`, commit the changes, and push them to this repository.
+2. Create and push a matching tag. For the current version:
+
+   ```sh
+   git tag -a v2.4.6 -m "Media Controls 2.4.6"
+   git push origin v2.4.6
+   ```
+
+The [Release workflow](.github/workflows/release.yml) checks that the tag matches the extension version, builds the installable ZIP, and creates a GitHub Release with the ZIP attached and generated release notes. Tags with a hyphen, such as `v2.4.7-beta.1`, are published as prereleases and must also match `version-name`. The workflow uses GitHub's automatic `GITHUB_TOKEN`; no additional release secrets are required. Releases are published to this GitHub repository.
 
 ---
 
@@ -77,12 +109,12 @@ For active development, use `pnpm reload` (X11) or `pnpm debug` (Wayland) to tes
 
 Any type of contribution is appreciated! If you have any suggestions for new features feel free to open a new issue.
 
-If you are interested in translating, download the [po file](https://github.com/sakithb/media-controls/blob/main/assets/locale/mediacontrols%40cliffniff.github.com.pot) and translate it. Then open a pull request with the translated file. You can use [Gtranslator](https://flathub.org/apps/org.gnome.Gtranslator) or [Poedit](https://flathub.org/apps/net.poedit.Poedit) to translate.
+If you are interested in translating, download the [po file](assets/locale/mediacontrols%40cliffniff.github.com.pot) and translate it. Then open a pull request with the translated file. You can use [Gtranslator](https://flathub.org/apps/org.gnome.Gtranslator) or [Poedit](https://flathub.org/apps/net.poedit.Poedit) to translate.
 
 If you are interested in contributing code. There are no specific guidelines for contributing. Just make sure you follow the coding style of the project. To update the translation files run `pnpm run translations` in the extensions directory after your changes are done. This will update the files in the locale folder.
 
-<a href="https://github.com/sakithb/media-controls/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=sakithb/media-controls" />
+<a href="https://github.com/Shane-96/media-controls/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Shane-96/media-controls" />
 </a>
 
 Made with [contrib.rocks](https://contrib.rocks).
