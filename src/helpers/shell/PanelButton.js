@@ -232,7 +232,7 @@ class PanelButton extends PanelMenu.Button {
                 style_class: "no-padding popup-menu-box",
                 activate: false,
             });
-            this.menuBox.set_vertical(true);
+            this.menuBox.orientation = Clutter.Orientation.VERTICAL;
             this.menuBox.remove_style_class_name("popup-menu-item");
             this.menuBox.remove_all_children();
         }
